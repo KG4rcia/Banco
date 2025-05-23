@@ -1,12 +1,11 @@
 usuarios = {}
-extrato = []
 
 def selecionarOpcao ():
 
     opcao = int(input('''
 
     Selecione a sua opção!
-    =========================
+    ========================= 
     | [1] - > Fazer Cadastro.
     | [2] - > Depositar.
     | [3] - > Sacar.
@@ -31,7 +30,6 @@ def selecionarOpcao ():
         print(mensagemDeEscolha)
         return opcao
 
-
 def funcionalidades():
     while True:
         escolhido = selecionarOpcao()
@@ -42,7 +40,7 @@ def funcionalidades():
     | Para começarmos, informe o seu nome.
     =========================       
 
-    - > Sua resposta: ''')
+    - > Sua resposta: ''').capitalize()
             
             cpf_usuario = int(input(f'''
 
@@ -64,7 +62,8 @@ def funcionalidades():
 
                 "Nome": nome_usuario,
                 "Idade": idade_usuario,
-                "Saldo": 0
+                "Saldo": 0,
+                "Extrato": []
             }
             
             retornar = input('''
@@ -100,13 +99,15 @@ def funcionalidades():
 
     - > Sua resposta: '''))
                 usuarios[encontrarUsuario]["Saldo"] += valorDepositar
-                print(f'''
+                exibirDeposito = (f'''
                       
     =========================                  
     | O valor de R$: {usuarios[encontrarUsuario]["Saldo"]:.2f} foi depositado!
     =========================
 
     ''')
+                usuarios[encontrarUsuario]["Extrato"].append(exibirDeposito)
+                print(exibirDeposito)
             else:
                 print('''
  
@@ -126,7 +127,7 @@ def funcionalidades():
             if encontrandoUsuarioSaque in usuarios:
                 nomeSaque = usuarios[encontrandoUsuarioSaque]["Nome"]
                 valorSaque = int(input(f'''
-
+            
     =========================                  
     | Olá {nomeSaque}, digite o valor que você deseja sacar.
     ========================= 
@@ -134,12 +135,14 @@ def funcionalidades():
     - > Sua resposta: '''))
                 if valorSaque <= usuarios[encontrandoUsuarioSaque]["Saldo"]:
                     usuarios[encontrandoUsuarioSaque]["Saldo"] -= valorSaque
-                    print(f'''
+                    exibirSaque = f'''
 
     =========================                  
     | Você realizou um saque de R$: {valorSaque}, agora você tem {usuarios[encontrandoUsuarioSaque]["Saldo"]:.2f} em conta.  
-    ========================= ''')
+    ========================= '''
                     
+                    print(exibirSaque)
+                    usuarios[encontrandoUsuarioSaque]["Extrato"].append(exibirSaque) 
                 else:
                     print(f'''
 
@@ -147,7 +150,50 @@ def funcionalidades():
     | Você não tem saldo o suficiente, pois seu saldo é de {usuarios[encontrandoUsuarioSaque]["Saldo"]}
     ========================= ''')
 
-            
+            else:
+                print('''
+ 
+    =========================                  
+    | Esse usuário não existe, tente novamente.
+    ========================= 
+
+    ''')
+        elif escolhido == 4:
+            identificarExtratoUsuario = int(input(f'''
+
+    =========================                  
+    | Beleza, vamos identificar seu login. Por favor, digite seu CPF.
+    =========================
+
+    - > Sua resposta: '''))
+            if identificarExtratoUsuario in usuarios:
+                if not usuarios[identificarExtratoUsuario]["Extrato"]:
+                    print(f'''
+
+    =========================                  
+    | O usuário {usuarios[identificarExtratoUsuario]["Nome"]} não teve nenhum deposito ou saque.
+    =========================
+
+                          ''')  
+                else:    
+                   print(f'''
+
+
+    =========================                  
+    | O usuário {usuarios[identificarExtratoUsuario]["Nome"]} tem no extrato: \n
+    {usuarios[identificarExtratoUsuario]["Extrato"]}
+    =========================
+                         
+                         ''')
+            else:
+                print('''
+ 
+    =========================                  
+    | Esse usuário não existe, tente novamente.
+    ========================= 
+
+    ''')
+                    
         elif escolhido == 5:
             for cpf, dados in usuarios.items():
                 print(f'''
